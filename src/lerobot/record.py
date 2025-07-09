@@ -171,6 +171,7 @@ def record_loop(
     control_time_s: int | None = None,
     single_task: str | None = None,
     display_data: bool = False,
+    squares: str | None = None,
 ):
     if dataset is not None and dataset.fps != fps:
         raise ValueError(f"The dataset fps should be equal to requested fps ({dataset.fps} != {fps}).")
@@ -205,7 +206,7 @@ def record_loop(
             events["exit_early"] = False
             break
 
-        observation = robot.get_observation()
+        observation = robot.get_observation(squares)
 
         if policy is not None or dataset is not None:
             observation_frame = build_dataset_frame(dataset.features, observation, prefix="observation")
@@ -308,6 +309,7 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
 
     recorded_episodes = 0
     while recorded_episodes < cfg.dataset.num_episodes and not events["stop_recording"]:
+        squares = input("write the start square followed by the end square (ex. 'a2 b4'): ").strip().lower()
         log_say(f"Recording episode {dataset.num_episodes}", cfg.play_sounds)
         record_loop(
             robot=robot,
@@ -319,6 +321,7 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
             control_time_s=cfg.dataset.episode_time_s,
             single_task=cfg.dataset.single_task,
             display_data=cfg.display_data,
+            square=squares
         )
 
         # Execute a few seconds without recording to give time to manually reset the environment
