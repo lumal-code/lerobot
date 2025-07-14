@@ -31,7 +31,7 @@ from ..robot import Robot
 from ..utils import ensure_safe_goal_position
 from .config_so100_follower import SO100FollowerConfig
 
-from utils.overlay import async_overlay
+from lerobot.utils.overlay import async_overlay
 
 logger = logging.getLogger(__name__)
 
