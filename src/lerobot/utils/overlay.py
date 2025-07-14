@@ -1,10 +1,18 @@
 import cv2
 import json
 
-with open("square_to_box.json") as f:
-    SQUARE_TO_BOX = json.load(f)
-
 def async_overlay(cam, squares: str):
+     # Load the JSON file when the function is actually called
+    try:
+        with open("square_to_box.json") as f:
+            SQUARE_TO_BOX = json.load(f)
+    except FileNotFoundError:
+        print("Warning: square_to_box.json not found, no overlay will be applied")
+        return cam.async_read()
+    except json.JSONDecodeError:
+        print("Warning: square_to_box.json is invalid, no overlay will be applied")
+        return cam.async_read()
+    
     frame = cam.async_read()
     if frame is None:
         raise ValueError("Camera returned empty frame")

@@ -58,8 +58,10 @@ def get_cv2_rotation(rotation: Cv2Rotation) -> int | None:
 
 def get_cv2_backend() -> int:
     import cv2
-
+    
     if platform.system() == "Windows":
+        return cv2.CAP_DSHOW  # or cv2.CAP_MSMF
+    elif platform.system() == "Darwin":  # macOS
         return cv2.CAP_AVFOUNDATION
     else:
         return cv2.CAP_ANY

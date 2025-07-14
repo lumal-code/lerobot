@@ -80,12 +80,14 @@ def teleop_loop(
     teleop: Teleoperator, robot: Robot, fps: int, display_data: bool = False, duration: float | None = None
 ):
     display_len = max(len(key) for key in robot.action_features)
+    squares = input("write the start square followed by the end square (ex. 'a2 b4'): ").strip().lower()
     start = time.perf_counter()
+    
     while True:
         loop_start = time.perf_counter()
         action = teleop.get_action()
         if display_data:
-            observation = robot.get_observation()
+            observation = robot.get_observation(squares)
             log_rerun_data(observation, action)
 
         robot.send_action(action)
