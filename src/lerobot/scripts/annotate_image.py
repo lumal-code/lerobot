@@ -69,4 +69,4 @@ def annotate_image(image_path):
 # To run: annotate_image("your_board_image.png") at the bottom of your script
 
 if __name__ == "__main__":
-    annotate_image("/Users/luke/dev/lerobot/opencv_0.png")
+    annotate_image("/Users/luke/dev/lerobot/chess_board.png")
