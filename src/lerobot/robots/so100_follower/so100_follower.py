@@ -68,8 +68,10 @@ class SO100Follower(Robot):
             overlay_config = OverlayConfig(enabled=True, box_color=(255, 0, 0), box_thickness=3)
             self.overlay_managers["front"] = ChessOverlayManager(
                 overlay_config,
-                board_config_path="chess_board_config.json"
+                board_config_path="src/lerobot/robots/so100_follower/square_to_box.json"
             )
+        
+        self.overlay_managers["front"].create_chess_overlay("a2", "b4")
 
     @property
     def _motors_ft(self) -> dict[str, type]:

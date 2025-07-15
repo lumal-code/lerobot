@@ -27,8 +27,8 @@ class OverlayManager:
             color: Optional[Tuple[int, int, int]] = None, 
             thickness: Optional[int] = None):
         """Add a single box to be drawn"""
-        color = color or self.config.default_color
-        thickness = thickness or self.config.default_thickness
+        color = color or self.config.box_color
+        thickness = thickness or self.config.box_thickness
         self.boxes.append(Box(x1, y1, x2, y2, color, thickness))
     
     def clear_boxes(self):
@@ -43,10 +43,8 @@ class OverlayManager:
         for box in self.boxes:
             image = cv2.rectangle(
                 image, 
-                box.x1, 
-                box.y1, 
-                box.x2, 
-                box.y2, 
+                [box.x1, box.y1], 
+                [box.x2, box.y2], 
                 box.color, 
                 box.thickness
                 )

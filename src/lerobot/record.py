@@ -308,6 +308,9 @@ def record(cfg: RecordConfig) -> LeRobotDataset:
 
     recorded_episodes = 0
     while recorded_episodes < cfg.dataset.num_episodes and not events["stop_recording"]:
+        if "front" in robot.overlay_managers:
+            robot.overlay_managers["front"].set_chess_overlay()
+
         log_say(f"Recording episode {dataset.num_episodes}", cfg.play_sounds)
         record_loop(
             robot=robot,
