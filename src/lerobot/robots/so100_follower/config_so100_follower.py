@@ -15,6 +15,7 @@
 from dataclasses import dataclass, field
 
 from lerobot.cameras import CameraConfig
+from lerobot.cameras.overlays import OverlayConfig
 
 from ..config import RobotConfig
 
@@ -34,6 +35,7 @@ class SO100FollowerConfig(RobotConfig):
 
     # cameras
     cameras: dict[str, CameraConfig] = field(default_factory=dict)
+    camera_overlays: dict[str, OverlayConfig] = field(default_factory=dict)
 
     # Set to `True` for backward compatibility with previous policies/dataset
     use_degrees: bool = False

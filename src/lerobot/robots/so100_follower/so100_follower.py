@@ -30,6 +30,7 @@ from lerobot.motors.feetech import (
 from ..robot import Robot
 from ..utils import ensure_safe_goal_position
 from .config_so100_follower import SO100FollowerConfig
+from lerobot.cameras.overlays import OverlayManager, OverlayConfig
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,13 @@ class SO100Follower(Robot):
             calibration=self.calibration,
         )
         self.cameras = make_cameras_from_configs(config.cameras)
+        # CHANGE THIS LATER TO INCLUDE CLI??? Hardcode overlays for specific cameras 
+        self.overlay_managers = {}
+        
+        # Only add overlay to front camera
+        if "front" in self.cameras:
+            overlay_config = OverlayConfig(enabled=True, box_color=(255, 0, 0), box_thickness=3)
+            self.overlay_managers["front"] = OverlayManager(overlay_config)
 
     @property
     def _motors_ft(self) -> dict[str, type]:
@@ -168,7 +176,14 @@ class SO100Follower(Robot):
         # Capture images from cameras
         for cam_key, cam in self.cameras.items():
             start = time.perf_counter()
-            obs_dict[cam_key] = cam.async_read()
+            img = cam.async_read()
+
+            # Check if the camera has an overlay
+            if cam_key in self.overlay_managers:
+                overlay_manager = self.overlay_managers[cam_key]
+                img = overlay_manager.apply_overlay(img, cam_key)
+
+            obs_dict[cam_key] = img
             dt_ms = (time.perf_counter() - start) * 1e3
             logger.debug(f"{self} read {cam_key}: {dt_ms:.1f}ms")
 

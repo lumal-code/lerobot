@@ -14,5 +14,5 @@ class OverlayManager:
         """ Applies the overlay to the image provided """
         if not self.config.enabled:
             return image
-        
-        print("apply overlay")
+
+        return image
