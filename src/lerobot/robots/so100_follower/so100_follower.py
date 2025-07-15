@@ -30,7 +30,7 @@ from lerobot.motors.feetech import (
 from ..robot import Robot
 from ..utils import ensure_safe_goal_position
 from .config_so100_follower import SO100FollowerConfig
-from lerobot.cameras.overlays import OverlayManager, OverlayConfig
+from lerobot.cameras.overlays import ChessOverlayManager, OverlayConfig
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,10 @@ class SO100Follower(Robot):
         # Only add overlay to front camera
         if "front" in self.cameras:
             overlay_config = OverlayConfig(enabled=True, box_color=(255, 0, 0), box_thickness=3)
-            self.overlay_managers["front"] = OverlayManager(overlay_config)
+            self.overlay_managers["front"] = ChessOverlayManager(
+                overlay_config,
+                board_config_path="chess_board_config.json"
+            )
 
     @property
     def _motors_ft(self) -> dict[str, type]:
