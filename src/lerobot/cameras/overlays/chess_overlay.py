@@ -30,6 +30,10 @@ class ChessOverlayManager(OverlayManager):
         while True:
             try:
                 move_input = input(f"Enter chess move (e.g. 'e2 e4'): ").strip()
+
+                if move_input == "skip":
+                    self.clear_boxes()
+                    return False
                 
                 parts = move_input.split()
                 if len(parts) != 2:
